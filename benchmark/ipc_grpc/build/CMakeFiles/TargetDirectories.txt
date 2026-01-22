@@ -1,0 +1,5 @@
+/home/cc/lab/seguecg-libjpeg/benchmark/ipc_grpc/build/CMakeFiles/jpeg_ipc_proto.dir
+/home/cc/lab/seguecg-libjpeg/benchmark/ipc_grpc/build/CMakeFiles/jpeg_ipc_server.dir
+/home/cc/lab/seguecg-libjpeg/benchmark/ipc_grpc/build/CMakeFiles/jpeg_ipc_client.dir
+/home/cc/lab/seguecg-libjpeg/benchmark/ipc_grpc/build/CMakeFiles/edit_cache.dir
+/home/cc/lab/seguecg-libjpeg/benchmark/ipc_grpc/build/CMakeFiles/rebuild_cache.dir

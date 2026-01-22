@@ -1,0 +1,2 @@
+# Hashes of file build rules.
+92f07189fa04678518a6301762b4e29f jpeg_ipc.pb.cc

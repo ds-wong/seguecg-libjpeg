@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+package jpegipc;
+
+service JpegRecode {
+  rpc Recode(RecodeRequest) returns (RecodeReply) {}
+}
+
+message RecodeRequest {
+  uint32 quality = 1;
+  bytes  input   = 2;
+}
+
+message RecodeReply {
+  uint32 width   = 1;
+  uint32 height  = 2;
+  bytes  output  = 3;
+}
