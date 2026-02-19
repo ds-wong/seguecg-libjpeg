@@ -1,0 +1,121 @@
+syntax = "proto3";
+
+package libjpeg_grpc;
+
+service LibjpegService {
+  rpc JpegStdError(JpegStdErrorRequest) returns (JpegStdErrorReply);
+
+  rpc JpegCreateDecompress(JpegCreateDecompressRequest) returns (Ack);
+  rpc JpegMemSrc(JpegMemSrcRequest) returns (Ack);
+  rpc JpegReadHeader(JpegReadHeaderRequest) returns (Ack);
+  rpc JpegStartDecompress(JpegStartDecompressRequest) returns (Ack);
+  rpc JpegReadScanlines(JpegReadScanlinesRequest) returns (Ack);
+  rpc JpegFinishDecompress(JpegFinishDecompressRequest) returns (Ack);
+  rpc JpegDestroyDecompress(JpegDestroyDecompressRequest) returns (Ack);
+
+  rpc JpegCreateCompress(JpegCreateCompressRequest) returns (Ack);
+  rpc JpegMemDest(JpegMemDestRequest) returns (Ack);
+  rpc JpegSetDefaults(JpegSetDefaultsRequest) returns (Ack);
+  rpc JpegSetQuality(JpegSetQualityRequest) returns (Ack);
+  rpc JpegStartCompress(JpegStartCompressRequest) returns (Ack);
+  rpc JpegWriteScanlines(JpegWriteScanlinesRequest) returns (JpegWriteScanlinesReply);
+  rpc JpegFinishCompress(JpegFinishCompressRequest) returns (Ack);
+  rpc JpegDestroyCompress(JpegDestroyCompressRequest) returns (Ack);
+
+  rpc Terminate(TerminateRequest) returns (Ack);
+}
+
+message Ack {
+  uint32 ok = 1; // use 1 for success
+}
+
+//
+// Pointer conventions
+// We represent raw pointers as uint64 "addr" values.
+// These are *virtual addresses* that must be meaningful in both processes
+// given your shared memory setup.
+//
+
+message JpegStdErrorRequest {
+  uint64 err_addr = 1;   // jpeg_error_mgr*
+}
+message JpegStdErrorReply {
+  uint64 result_addr = 1; // jpeg_error_mgr*
+}
+
+message JpegCreateDecompressRequest {
+  uint64 cinfo_addr = 1; // j_decompress_ptr
+}
+
+message JpegMemSrcRequest {
+  uint64 cinfo_addr = 1;    // j_decompress_ptr
+  uint64 buffer_addr = 2;   // unsigned char*
+  uint64 size = 3;          // unsigned long
+}
+
+message JpegReadHeaderRequest {
+  uint64 cinfo_addr = 1;        // j_decompress_ptr
+  bool require_image = 2;       // boolean
+}
+
+message JpegStartDecompressRequest {
+  uint64 cinfo_addr = 1; // j_decompress_ptr
+}
+
+message JpegReadScanlinesRequest {
+  uint64 cinfo_addr = 1;      // j_decompress_ptr
+  uint64 buffer_addr = 2;     // JSAMPARRAY (usually JSAMPLE**)
+  uint32 max_lines = 3;       // JDIMENSION
+}
+
+message JpegFinishDecompressRequest {
+  uint64 cinfo_addr = 1; // j_decompress_ptr
+}
+
+message JpegDestroyDecompressRequest {
+  uint64 cinfo_addr = 1; // j_decompress_ptr
+}
+
+message JpegCreateCompressRequest {
+  uint64 cinfo_addr = 1; // j_compress_ptr
+}
+
+message JpegMemDestRequest {
+  uint64 cinfo_addr = 1;        // j_compress_ptr
+  uint64 outbuffer_addr = 2;    // unsigned char**  (address of pointer)
+  uint64 outsize_addr = 3;      // unsigned long*   (address of size)
+}
+
+message JpegSetDefaultsRequest {
+  uint64 cinfo_addr = 1; // j_compress_ptr
+}
+
+message JpegSetQualityRequest {
+  uint64 cinfo_addr = 1;       // j_compress_ptr
+  int32 quality = 2;           // int
+  bool force_baseline = 3;     // boolean
+}
+
+message JpegStartCompressRequest {
+  uint64 cinfo_addr = 1;         // j_compress_ptr
+  bool write_all_tables = 2;     // boolean
+}
+
+message JpegWriteScanlinesRequest {
+  uint64 cinfo_addr = 1;      // j_compress_ptr
+  uint64 scanlines_addr = 2;  // JSAMPARRAY
+  uint32 num_lines = 3;       // JDIMENSION
+}
+message JpegWriteScanlinesReply {
+  uint32 result = 1;          // JDIMENSION
+}
+
+message JpegFinishCompressRequest {
+  uint64 cinfo_addr = 1; // j_compress_ptr
+}
+
+message JpegDestroyCompressRequest {
+  uint64 cinfo_addr = 1; // j_compress_ptr
+}
+
+message TerminateRequest {}
